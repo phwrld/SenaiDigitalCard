@@ -2,8 +2,9 @@ package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pdrinyo.thesenaidigitalcard.feature.home.datarepository.FakeLoginRepositoryImpl
-import com.pdrinyo.thesenaidigitalcard.feature.home.datarepository.LoginRepository
+import com.pdrinyo.thesenaidigitalcard.feature.home.domain.UsuarioLogado
+import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.data.repository.LoginRepository
+import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.data.repository.LoginRepositoryProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val repository: LoginRepository = FakeLoginRepositoryImpl()
+    private val repository: LoginRepository = LoginRepositoryProvider.provide()
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUIState())

@@ -1,6 +1,5 @@
 package com.pdrinyo.thesenaidigitalcard.feature.login
 
-import android.util.Log
 import com.pdrinyo.thesenaidigitalcard.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,9 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -58,11 +54,6 @@ fun LoginScreen(
     navController: NavController? = null,
     onLoginSucesso: (UsuarioLogado) -> Unit = {}
 ) {
-    // Variáveis de Estado
-    var email by remember { mutableStateOf("") }
-    var senha by remember { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf("") }
-
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = uiState.usuarioLogado) {
@@ -71,6 +62,7 @@ fun LoginScreen(
             onLoginSucesso(usuario)
         }
     }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -86,10 +78,10 @@ fun LoginScreen(
             Text(
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(color = DarkTextBlue)) {
-                        append("Seja ")
+                        append("Área do ")
                     }
                     withStyle(style = SpanStyle(color = LightTextBlue)) {
-                        append("Bem vindo!")
+                        append("Aluno")
                     }
                 },
                 fontSize = 36.sp,
@@ -104,6 +96,7 @@ fun LoginScreen(
                 onValueChange = { value ->
                     viewModel.onEvent(LoginUIEvent.OnUsuarioChange(value))
                 },
+                placeholder = { Text("Usuário", color = Color.Gray) },
                 singleLine = true,
                 leadingIcon = {
                     Box(
@@ -131,11 +124,10 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-
             OutlinedTextField(
                 value = uiState.senha,
                 onValueChange = { value ->
-                    viewModel.onEvent(LoginUIEvent.OnSenhaChange(value)) // Envia a digitação para o ViewModel
+                    viewModel.onEvent(LoginUIEvent.OnSenhaChange(value))
                 },
                 placeholder = { Text("Senha", color = Color.Gray) },
                 singleLine = true,
@@ -167,7 +159,6 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-
             Button(
                 onClick = {
                     viewModel.onEvent(LoginUIEvent.OnEntrarClick)
@@ -191,12 +182,10 @@ fun LoginScreen(
                 }
             }
 
-
-            val mensagemErroExibicao = uiState.erroMensage ?: errorMessage
-            if (!mensagemErroExibicao.isNullOrEmpty()) {
+            uiState.erroMensage?.let { erro ->
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = mensagemErroExibicao,
+                    text = erro,
                     color = Color.Red,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
@@ -206,7 +195,6 @@ fun LoginScreen(
             }
 
             Spacer(modifier = Modifier.weight(1f))
-
 
             Image(
                 painter = painterResource(id = R.drawable.tsdglogo),

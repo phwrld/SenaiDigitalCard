@@ -14,33 +14,29 @@ import com.pdrinyo.thesenaidigitalcard.feature.login.LoginScreen
 import com.pdrinyo.thesenaidigitalcard.feature.turma.presentation.TurmasScreen
 import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.screen.UnidadeCurricularAlunoScreen
 import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.screen.UnidadeCurricularScreen
-// CERTIFIQUE-SE DE IMPORTAR SEU VIEWMODEL CORRETAMENTE
-// import com.pdrinyo.thesenaidigitalcard.feature.session.SessionViewModel
 
 @Composable
 fun AppNavHost(
     navController: NavHostController,
-    // Passe o ViewModel como parâmetro da função (ou use hiltViewModel() / viewModel())
     sessionViewModel: SessionViewModel
 ) {
-
     val usuarioLogado by sessionViewModel.usuarioLogado.collectAsStateWithLifecycle()
 
     NavHost(
         navController = navController,
         startDestination = Routes.Login.route
     ) {
-
         // LOGIN
-        // DENTRO DO AppNavHost.kt
         composable(Routes.Login.route) {
             LoginScreen(
                 navController = navController,
                 onLoginSucesso = { usuario ->
                     sessionViewModel.setUsuarioLogado(usuario)
 
-                    // Redireciona dependendo do perfil (Aluno ou Professor)
-                    val destino = if (usuario.tipo == "Professor") {
+                    // Define se é professor com base no nome ou regra de negócio
+                    val ehProfessor = usuario.nome.contains("maria", ignoreCase = true)
+
+                    val destino = if (ehProfessor) {
                         Routes.HomeProfessor.route
                     } else {
                         Routes.HomeAluno.route
@@ -68,7 +64,7 @@ fun AppNavHost(
             }
         }
 
-        // CARTEIRINHA
+        // CARTEIRINHA DO ALUNO
         composable(Routes.Carteirinha.route) {
             TheSenaiDigitalCard()
         }

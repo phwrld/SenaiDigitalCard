@@ -3,7 +3,7 @@ package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation
 import android.os.Message
 import com.pdrinyo.thesenaidigitalcard.feature.home.domain.UsuarioLogado
 
-data class LoginUIState (
+data class  LoginUIState (
     val usuario: String = "",
     val senha: String  = "",
     val erroMensage: String? = null,
