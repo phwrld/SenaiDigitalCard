@@ -31,25 +31,31 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdrinyo.thesenaidigitalcard.feature.login.BackgroundBlue
 import com.pdrinyo.thesenaidigitalcard.feature.login.DarkTextBlue
 import com.pdrinyo.thesenaidigitalcard.feature.login.LightTextBlue
 import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.UnidadeCurricularViewModel
 import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.component.UnidadeCurricularAlunoCard
 
+/**
+ * Segue o fluxo da tela do Rafael (UiState e ViewModel),
+ * preservando o painel azul, o titulo UCs e os cards do aluno.
+ * Nao existe mais dependencia de dataSource() ficticio.
+ */
 @Composable
 fun UnidadeCurricularAlunoScreen(
-    viewModel: UnidadeCurricularViewModel = viewModel()
+    modifier: Modifier = Modifier,
+    viewModel: UnidadeCurricularViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val errorMessage = uiState.errorMessage
 
     LaunchedEffect(viewModel) {
         viewModel.carregar()
     }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(BackgroundBlue)
             .padding(horizontal = 20.dp, vertical = 24.dp)
@@ -59,6 +65,7 @@ fun UnidadeCurricularAlunoScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(20.dp))
+
             Text(
                 text = buildAnnotatedString {
                     withStyle(SpanStyle(color = DarkTextBlue)) { append("U") }
@@ -68,43 +75,53 @@ fun UnidadeCurricularAlunoScreen(
                 fontWeight = FontWeight.Bold,
                 fontFamily = FontFamily.SansSerif
             )
+
             Spacer(modifier = Modifier.height(24.dp))
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .background(Color.White.copy(alpha = 0.85f), RoundedCornerShape(24.dp))
+                    .background(
+                        Color.White.copy(alpha = 0.85f),
+                        shape = RoundedCornerShape(24.dp)
+                    )
                     .border(2.dp, Color.White, RoundedCornerShape(24.dp))
                     .padding(12.dp)
             ) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    contentPadding = PaddingValues(vertical = 4.dp)
-                ) {
-                    if (uiState.isLoading) {
-                        item {
-                            Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
-                                CircularProgressIndicator()
+                when {
+                    uiState.isLoading -> {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                    errorMessage != null -> {
+                        Column(
+                            modifier = Modifier.fillMaxSize().padding(16.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(text = errorMessage, color = DarkTextBlue)
+                            Spacer(Modifier.height(12.dp))
+                            Button(onClick = { viewModel.carregar() }) {
+                                Text("Tentar novamente")
                             }
                         }
-                    } else if (uiState.errorMessage != null) {
-                        item {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text(uiState.errorMessage ?: "", color = DarkTextBlue)
-                                Spacer(Modifier.height(12.dp))
-                                Button(onClick = viewModel::carregar) {
-                                    Text("Tentar novamente")
-                                }
-                            }
-                        }
-                    } else if (uiState.unidades.isEmpty()) {
-                        item {
+                    }
+                    uiState.unidades.isEmpty() -> {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                             Text("Nenhuma unidade curricular encontrada.", color = DarkTextBlue)
                         }
-                    } else {
-                        items(uiState.unidades, key = { it.id }) { item ->
-                            UnidadeCurricularAlunoCard(item = item)
+                    }
+                    else -> {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            contentPadding = PaddingValues(vertical = 4.dp)
+                        ) {
+                            items(items = uiState.unidades, key = { it.id }) { unidade ->
+                                UnidadeCurricularAlunoCard(item = unidade)
+                            }
                         }
                     }
                 }
