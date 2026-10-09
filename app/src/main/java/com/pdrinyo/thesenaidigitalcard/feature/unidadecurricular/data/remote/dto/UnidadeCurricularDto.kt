@@ -1,13 +1,10 @@
-package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.dto
+package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.data.remote.dto
 
 import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.domain.model.UnidadeCurricularAluno
 import kotlinx.serialization.Serializable
 
-/**
- * Mesmo contrato de GET /unidades-curriculares usado no projeto do professor.
- */
 @Serializable
-data class UnidadeCurricularResponseDto(
+data class UnidadeCurricularDto(
     val id: String,
     val nome: String,
     val professor: String,
@@ -18,8 +15,10 @@ data class UnidadeCurricularResponseDto(
 ) {
     fun toDomain() = UnidadeCurricularAluno(
         id = id,
-        materia = nome,
-        nota = nota1,
+        nome = nome,
+        professor = professor,
+        nota1 = nota1,
+        nota2 = nota2,
         media = media,
         faltas = faltas
     )

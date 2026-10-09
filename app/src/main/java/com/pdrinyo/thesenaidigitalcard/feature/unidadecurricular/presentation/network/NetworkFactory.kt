@@ -3,7 +3,7 @@ package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.n
 import com.pdrinyo.thesenaidigitalcard.core.auth.SessionTokenStore
 import com.pdrinyo.thesenaidigitalcard.core.network.AuthInterceptor
 import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.service.AuthApi
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.service.UnidadeCurricularApi
+import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.data.remote.service.UnidadeCurricularApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient

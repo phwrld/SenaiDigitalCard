@@ -1,39 +1,47 @@
-# Integração com a API do professor Rafael
+# Senai Digital Card — integracao com API do Rafael
 
-A identidade visual original do **The Senai Digital Card** foi mantida: fotos
-(`homelanderr`), logos, imagens, cores, cards e navegação aluno/professor.
+## Estrutura da unidade curricular do aluno
 
-## Contratos utilizados
+A implementacao segue as camadas do professor, sem substituir o visual do app:
 
-- `POST /auth/login`: JSON `{"login":"...","senha":"..."}`.
-  A resposta aceita `id`, `nome`, `matricula`, `curso`, `turma`, `token`.
-- `GET /unidades-curriculares`: envia `Authorization: Bearer <token>` e lê
-  `id`, `nome`, `professor`, `nota1`, `nota2`, `media`, `faltas`.
-- Na carteira, nome, curso, matrícula, turma e QR Code passam a vir do login.
-  A foto e o visual original continuam os mesmos; foto e QR de exemplo só no Preview.
+- `feature/unidadecurricular/data/remote/dto/UnidadeCurricularDto.kt`
+- `feature/unidadecurricular/data/remote/service/UnidadeCurricularApi.kt`
+- `feature/unidadecurricular/data/repository/ApiUnidadeCurricularRepositoryImpl.kt`
+- `feature/unidadecurricular/domain/model/UnidadeCurricularAluno.kt`
+- `feature/unidadecurricular/domain/repository/UnidadeCurricularRepository.kt`
+- `feature/unidadecurricular/presentation/UnidadeCurricularUiState.kt`
+- `feature/unidadecurricular/presentation/UnidadeCurricularViewModel.kt`
+- `feature/unidadecurricular/presentation/factory/UnidadeCurricularViewModelFactory.kt`
+- `feature/unidadecurricular/presentation/screen/UnidadeCurricularAlunoScreen.kt`
+- `feature/unidadecurricular/presentation/component/UnidadeCurricularAlunoCard.kt`
 
-## Como executar
+O login usa `POST /auth/login` e a unidade curricular usa
+`GET /unidades-curriculares`, com `Authorization: Bearer <token>`.
+A base URL configurada em `NetworkFactory` e `http://10.0.2.2:8080/`
+(emulador com API rodando no computador).
 
-1. Inicie a API compatível com a do professor na porta **8080** do computador.
-2. Use o **emulador Android** (a base URL é `http://10.0.2.2:8080/`).
-   Em um celular físico, configure no `NetworkFactory` o IP LAN do computador;
-   o celular deve conseguir alcançar a máquina onde está a API.
-3. No Android Studio, sincronize o Gradle e execute o aplicativo.
-4. Teste login válido, login inválido, UCs, voltar e sair.
-5. Para testes locais: `./gradlew testDebugUnitTest`.
+Os objetos de dominio conservam todos os campos da API:
+`id, nome, professor, nota1, nota2, media, faltas`.
 
-## Limitações conhecidas
+## Se o Android Studio ainda mostra erro em dataSource()
 
-- O contrato público do app do Rafael lido neste trabalho **não possui papel
-  `PROFESSOR`**, nem endpoints para listar turmas ou lançar faltas.
-  O aplicativo só libera as telas de professor quando uma API adaptada retornar
-  `"tipo":"PROFESSOR"`. Nessas telas, os exemplos de turmas/faltas ainda
-  são **locais e não persistem**. Não confunda o botão de falta com um
-  lançamento no servidor.
-- O QR Code representa a matrícula. Não é um token de segurança e só terá
-  validação externa se houver um serviço para conferir essa matrícula.
-- O token é armazenado apenas em memória durante a sessão; fechar o processo
-  exige novo login. Em produção, a API deve usar HTTPS e a configuração de
-  tráfego HTTP local deve ser restringida.
-- O backend **não faz parte deste repositório**; disponibilidade e credenciais
-  válidas precisam ser verificadas executando a API.
+**O arquivo `dataSource.kt` e sua chamada foram removidos.**
+A tela correta fica na pasta `presentation/screen`, nao em
+`presentation/component`. Atualize sua copia do GitHub:
+```bash
+git checkout master
+git pull origin master
+```
+Ou baixe a branch/PR atualizado antes de mesclar. Confira que
+nao existe outra copia antiga de `UnidadeCurricularAlunoScreen.kt`
+na arvore de arquivos do app. Depois use **Sync Project with Gradle Files**
+e **Build > Rebuild Project**.
+
+## API e permissoes
+
+A API de referencia nao descreve endpoints de professor/turmas/faltas;
+essas telas sao demonstracoes locais e nao salvam lancamentos no servidor.
+O login do aluno precisa retornar matricula e token validos.
+
+A foto, os logos, as cores, o estilo do painel e dos cards foram mantidos.
+O build de Android deve ser confirmado em CI ou no Android Studio antes do merge.

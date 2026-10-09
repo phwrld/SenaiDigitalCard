@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,6 +24,10 @@ import com.pdrinyo.thesenaidigitalcard.feature.login.DarkTextBlue
 import com.pdrinyo.thesenaidigitalcard.feature.login.LoginScreen
 import com.pdrinyo.thesenaidigitalcard.feature.turma.presentation.TurmasScreen
 import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.screen.UnidadeCurricularAlunoScreen
+import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.UnidadeCurricularViewModel
+import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.factory.UnidadeCurricularViewModelFactory
+import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.data.repository.ApiUnidadeCurricularRepositoryImpl
+import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.network.NetworkFactory
 import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.screen.UnidadeCurricularScreen
 
 @Composable
@@ -74,7 +80,17 @@ fun AppNavHost(
 
         composable(Routes.UnidadeCurricularAluno.route) {
             if (usuario == null) RedirecionarParaLogin(navController)
-            else UnidadeCurricularAlunoScreen()
+            else {
+                val factory = remember {
+                    UnidadeCurricularViewModelFactory(
+                        ApiUnidadeCurricularRepositoryImpl(
+                            NetworkFactory.createUnidadeCurricularApi()
+                        )
+                    )
+                }
+                val ucViewModel: UnidadeCurricularViewModel = viewModel(factory = factory)
+                UnidadeCurricularAlunoScreen(viewModel = ucViewModel)
+            }
         }
 
         composable(Routes.HomeProfessor.route) {
