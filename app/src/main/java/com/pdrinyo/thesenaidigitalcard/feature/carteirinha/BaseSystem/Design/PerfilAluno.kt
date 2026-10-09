@@ -22,33 +22,32 @@ import com.pdrinyo.thesenaidigitalcard.R
 fun PerfilAluno(
     nome: String,
     curso: String,
-    idFoto: Int = R.drawable.homelanderr
-
-){
+    idFoto: Int = R.drawable.homelanderr,
+    matricula: String? = null,
+    turma: String? = null
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.padding(10.dp)
     ) {
-
         Image(
-            painter = painterResource(id = R.drawable.homelanderr),
+            painter = painterResource(id = idFoto),
             contentDescription = "Foto aluno",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(200.dp)
                 .clip(CircleShape)
-                .border(
-                    3.dp,
-                    Color(0xFFFFD700).copy(alpha = 0.6f),
-                    CircleShape
-                )
+                .border(3.dp, Color(0xFFFFD700).copy(alpha = 0.6f), CircleShape)
                 .shadow(16.dp, CircleShape)
         )
-
         InfoAluno(textLabel = "Nome: ", textValue = nome)
-
         InfoAluno(textLabel = "Curso: ", textValue = curso)
+        if (!matricula.isNullOrBlank()) {
+            InfoAluno(textLabel = "Matrícula: ", textValue = matricula)
+        }
+        if (!turma.isNullOrBlank()) {
+            InfoAluno(textLabel = "Turma: ", textValue = turma)
+        }
     }
-
 }

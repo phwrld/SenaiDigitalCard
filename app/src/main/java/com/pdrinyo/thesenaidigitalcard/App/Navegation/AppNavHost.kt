@@ -1,15 +1,24 @@
 package com.pdrinyo.thesenaidigitalcard.App.Navegation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import com.pdrinyo.thesenaidigitalcard.App.TheSenaiDigitalCard
 import com.pdrinyo.thesenaidigitalcard.feature.home.HomeProfessorScreen
 import com.pdrinyo.thesenaidigitalcard.feature.home.HomeScreen
+import com.pdrinyo.thesenaidigitalcard.feature.home.domain.UsuarioLogado
+import com.pdrinyo.thesenaidigitalcard.feature.login.DarkTextBlue
 import com.pdrinyo.thesenaidigitalcard.feature.login.LoginScreen
 import com.pdrinyo.thesenaidigitalcard.feature.turma.presentation.TurmasScreen
 import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.screen.UnidadeCurricularAlunoScreen
@@ -20,73 +29,92 @@ fun AppNavHost(
     navController: NavHostController,
     sessionViewModel: SessionViewModel
 ) {
-    val usuarioLogado by sessionViewModel.usuarioLogado.collectAsStateWithLifecycle()
+    val usuario by sessionViewModel.usuarioLogado.collectAsStateWithLifecycle()
 
-    NavHost(
-        navController = navController,
-        startDestination = Routes.Login.route
-    ) {
-        // LOGIN
+    fun logout() {
+        sessionViewModel.limparSession()
+        navController.navigate(Routes.Login.route) {
+            popUpTo(navController.graph.id) { inclusive = true }
+            launchSingleTop = true
+        }
+    }
+
+    NavHost(navController = navController, startDestination = Routes.Login.route) {
         composable(Routes.Login.route) {
             LoginScreen(
-                navController = navController,
-                onLoginSucesso = { usuario ->
-                    sessionViewModel.setUsuarioLogado(usuario)
-
-                    // Define se é professor com base no nome ou regra de negócio
-                    val ehProfessor = usuario.nome.contains("maria", ignoreCase = true)
-
-                    val destino = if (ehProfessor) {
+                onLoginSucesso = { logado ->
+                    sessionViewModel.setUsuarioLogado(logado)
+                    val destino = if (logado.tipo.equals("PROFESSOR", ignoreCase = true)) {
                         Routes.HomeProfessor.route
                     } else {
                         Routes.HomeAluno.route
                     }
-
                     navController.navigate(destino) {
                         popUpTo(Routes.Login.route) { inclusive = true }
+                        launchSingleTop = true
                     }
                 }
             )
         }
 
-        // HOME DO ALUNO
         composable(Routes.HomeAluno.route) {
-            val usuario = usuarioLogado
-
-            if (usuario == null) {
-                LaunchedEffect(Unit) {
-                    navController.navigate(Routes.Login.route) {
-                        popUpTo(Routes.HomeAluno.route) { inclusive = true }
-                    }
-                }
-            } else {
+            if (usuario == null) RedirecionarParaLogin(navController)
+            else Box {
                 HomeScreen(navController = navController)
+                SairButton(onClick = ::logout, modifier = Modifier.align(Alignment.TopEnd))
             }
         }
 
-        // CARTEIRINHA DO ALUNO
         composable(Routes.Carteirinha.route) {
-            TheSenaiDigitalCard()
+            if (usuario == null) RedirecionarParaLogin(navController)
+            else {
+                TheSenaiDigitalCard(usuarioLogado = usuario)
+            }
         }
 
-        // UCS DO ALUNO
         composable(Routes.UnidadeCurricularAluno.route) {
-            UnidadeCurricularAlunoScreen()
+            if (usuario == null) RedirecionarParaLogin(navController)
+            else UnidadeCurricularAlunoScreen()
         }
 
-        // HOME DO PROFESSOR
         composable(Routes.HomeProfessor.route) {
-            HomeProfessorScreen(navController = navController)
+            if (!usuario.ehProfessor()) RedirecionarParaLogin(navController)
+            else Box {
+                HomeProfessorScreen(navController = navController)
+                SairButton(onClick = ::logout, modifier = Modifier.align(Alignment.TopEnd))
+            }
         }
 
-        // TURMAS DO PROFESSOR
+        // As telas abaixo preservam o design existente, mas exigem permissao de
+        // professor. A API de referencia nao oferece endpoints de turmas/faltas.
         composable(Routes.Turmas.route) {
-            TurmasScreen()
+            if (!usuario.ehProfessor()) RedirecionarParaLogin(navController)
+            else TurmasScreen()
         }
 
-        // UCS DO PROFESSOR
         composable(Routes.UnidadeCurricular.route) {
-            UnidadeCurricularScreen()
+            if (!usuario.ehProfessor()) RedirecionarParaLogin(navController)
+            else UnidadeCurricularScreen()
+        }
+    }
+}
+
+private fun UsuarioLogado?.ehProfessor(): Boolean =
+    this?.tipo.equals("PROFESSOR", ignoreCase = true)
+
+@Composable
+private fun SairButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    TextButton(onClick = onClick, modifier = modifier.padding(8.dp)) {
+        Text("Sair", color = DarkTextBlue)
+    }
+}
+
+@Composable
+private fun RedirecionarParaLogin(navController: NavHostController) {
+    LaunchedEffect(Unit) {
+        navController.navigate(Routes.Login.route) {
+            popUpTo(navController.graph.id) { inclusive = true }
+            launchSingleTop = true
         }
     }
 }

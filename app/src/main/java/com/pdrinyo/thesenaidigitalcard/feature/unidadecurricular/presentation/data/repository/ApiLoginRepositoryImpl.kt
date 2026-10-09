@@ -8,50 +8,40 @@ import kotlinx.serialization.json.Json
 import retrofit2.HttpException
 import java.io.IOException
 
-class ApiLoginRepositoryImpl(
-    private val api: AuthApi
-) : LoginRepository {
+class ApiLoginRepositoryImpl(private val api: AuthApi) : LoginRepository {
+    private val errorJson = Json { ignoreUnknownKeys = true }
 
-    private val json = Json { ignoreUnknownKeys = true }
-
-    override suspend fun login(usuario: String, senha: String): Result<UsuarioLogado> {
-        return runCatching {
+    override suspend fun login(usuario: String, senha: String): Result<UsuarioLogado> =
+        runCatching {
+            // LoginRequestDTO usa @SerialName("login"), compativel com Rafael.
             val response = api.login(LoginRequestDTO(usuario = usuario, senha = senha))
+            val token = response.token?.takeIf { it.isNotBlank() }
+                ?: throw IllegalStateException("A API nao retornou um token de autenticacao.")
             UsuarioLogado(
-                id = response.id ?: "",
-                nome = response.nome ?: "",
-                curso = response.curso ?: "",
-                turma = response.turma ?: "",
-                token = response.token ?: "",
-                tipo = response.tipo ?: "ALUNO"
+                id = response.id,
+                nome = response.nome,
+                matricula = response.matricula,
+                curso = response.curso,
+                turma = response.turma,
+                token = token,
+                tipo = response.tipo?.uppercase() ?: "ALUNO"
             )
-        }.recoverCatching { throwable ->
-            // Em vez de dar throw, oResult.failure trata o erro corretamente
-            Result.failure<UsuarioLogado>(mapToDomainError(throwable)).getOrThrow()
-        }
-    }
+        }.recoverCatching { throw mapToDomainError(it) }
 
-    private fun mapToDomainError(throwable: Throwable): Throwable {
-        return when (throwable) {
-            is HttpException -> mapHttpException(throwable)
-            is IOException -> IllegalStateException(
-                "Não foi possível conectar à API local. Verifique se ela está rodando."
-            )
-            else -> IllegalStateException(throwable.message ?: "Erro ao fazer login.")
+    private fun mapToDomainError(error: Throwable): Throwable = when (error) {
+        is HttpException -> {
+            if (error.code() == 401) {
+                IllegalArgumentException("Login ou senha inválidos.")
+            } else {
+                val message = error.response()?.errorBody()?.string()?.let { body ->
+                    runCatching { errorJson.decodeFromString<ErrorResponseDto>(body).message }.getOrNull()
+                }
+                IllegalStateException(message ?: "Erro no servidor (${error.code()}).")
+            }
         }
-    }
-
-    private fun mapHttpException(exception: HttpException): Throwable {
-        if (exception.code() == 401) {
-            return IllegalArgumentException("Login ou senha inválidos")
-        }
-
-        val messageFromBody = exception.response()?.errorBody()?.string()?.let { body ->
-            runCatching {
-                json.decodeFromString<ErrorResponseDto>(body).message
-            }.getOrNull()
-        }
-
-        return IllegalStateException(messageFromBody ?: "Erro no servidor (${exception.code()}).")
+        is IOException -> IllegalStateException(
+            "Não foi possível conectar à API. Verifique se o servidor está rodando."
+        )
+        else -> error
     }
 }

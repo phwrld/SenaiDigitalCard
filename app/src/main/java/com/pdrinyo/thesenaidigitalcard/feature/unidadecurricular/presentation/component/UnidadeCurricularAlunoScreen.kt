@@ -14,8 +14,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,15 +30,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdrinyo.thesenaidigitalcard.feature.login.BackgroundBlue
 import com.pdrinyo.thesenaidigitalcard.feature.login.DarkTextBlue
 import com.pdrinyo.thesenaidigitalcard.feature.login.LightTextBlue
+import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.UnidadeCurricularViewModel
 import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.component.UnidadeCurricularAlunoCard
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.data.dataSource
 
 @Composable
-fun UnidadeCurricularAlunoScreen() {
-    val listaMaterias = dataSource()
+fun UnidadeCurricularAlunoScreen(
+    viewModel: UnidadeCurricularViewModel = viewModel()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel) {
+        viewModel.carregar()
+    }
 
     Box(
         modifier = Modifier
@@ -47,24 +59,21 @@ fun UnidadeCurricularAlunoScreen() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(20.dp))
-
             Text(
                 text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(color = DarkTextBlue)) { append("U") }
-                    withStyle(style = SpanStyle(color = LightTextBlue)) { append("Cs") }
+                    withStyle(SpanStyle(color = DarkTextBlue)) { append("U") }
+                    withStyle(SpanStyle(color = LightTextBlue)) { append("Cs") }
                 },
                 fontSize = 36.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = FontFamily.SansSerif
             )
-
             Spacer(modifier = Modifier.height(24.dp))
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .background(Color.White.copy(alpha = 0.85f), shape = RoundedCornerShape(24.dp))
+                    .background(Color.White.copy(alpha = 0.85f), RoundedCornerShape(24.dp))
                     .border(2.dp, Color.White, RoundedCornerShape(24.dp))
                     .padding(12.dp)
             ) {
@@ -73,8 +82,30 @@ fun UnidadeCurricularAlunoScreen() {
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                     contentPadding = PaddingValues(vertical = 4.dp)
                 ) {
-                    items(listaMaterias) { item ->
-                        UnidadeCurricularAlunoCard(item = item)
+                    if (uiState.isLoading) {
+                        item {
+                            Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator()
+                            }
+                        }
+                    } else if (uiState.errorMessage != null) {
+                        item {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(uiState.errorMessage ?: "", color = DarkTextBlue)
+                                Spacer(Modifier.height(12.dp))
+                                Button(onClick = viewModel::carregar) {
+                                    Text("Tentar novamente")
+                                }
+                            }
+                        }
+                    } else if (uiState.unidades.isEmpty()) {
+                        item {
+                            Text("Nenhuma unidade curricular encontrada.", color = DarkTextBlue)
+                        }
+                    } else {
+                        items(uiState.unidades, key = { it.id }) { item ->
+                            UnidadeCurricularAlunoCard(item = item)
+                        }
                     }
                 }
             }
