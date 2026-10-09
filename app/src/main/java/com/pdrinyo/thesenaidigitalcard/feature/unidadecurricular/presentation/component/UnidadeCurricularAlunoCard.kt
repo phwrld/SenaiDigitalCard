@@ -51,7 +51,7 @@ fun UnidadeCurricularAlunoCard(
                     .size(44.dp)
                     .background(IconContainerBlue, RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.Center
-            )
+            ) { }
             Spacer(modifier = Modifier.width(12.dp))
             Column(
                 modifier = Modifier.weight(1f),
