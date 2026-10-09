@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.pdrinyo.thesenaidigitalcard.App.Navegation.App
 import com.pdrinyo.thesenaidigitalcard.R
 import com.pdrinyo.thesenaidigitalcard.feature.home.domain.UsuarioLogado
+import com.pdrinyo.thesenaidigitalcard.feature.carteirinha.BaseSystem.QrCode
 import com.pdrinyo.thesenaidigitalcard.feature.carteirinha.BaseSystem.Design.PerfilAluno
 import com.pdrinyo.thesenaidigitalcard.feature.carteirinha.BaseSystem.Design.TheSenaiDigitalCardTheme
 
@@ -85,11 +86,25 @@ fun TheSenaiDigitalCard(
                 idFoto = R.drawable.homelanderr
             )
             Spacer(modifier = Modifier.height(28.dp))
-            Image(
-                painter = painterResource(id = R.drawable.qrcodeee),
-                contentDescription = "QR Code ilustrativo",
-                modifier = Modifier.size(180.dp)
-            )
+            if (usuarioLogado == null) {
+                // Apenas o Preview do Android Studio utiliza a imagem original.
+                Image(
+                    painter = painterResource(id = R.drawable.qrcodeee),
+                    contentDescription = "QR Code de demonstracao",
+                    modifier = Modifier.size(180.dp)
+                )
+            } else if (usuarioLogado.matricula.isNotBlank()) {
+                // Na sessao real, o QR representa a matricula devolvida pela API.
+                QrCode(
+                    conteudo = usuarioLogado.matricula,
+                    modifier = Modifier.size(180.dp)
+                )
+            } else {
+                androidx.compose.material3.Text(
+                    text = "QR indisponível: matrícula não informada",
+                    color = Color.White
+                )
+            }
         }
     }
 }

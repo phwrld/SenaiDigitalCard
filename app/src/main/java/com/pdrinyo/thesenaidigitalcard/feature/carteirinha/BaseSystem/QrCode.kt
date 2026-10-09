@@ -3,6 +3,7 @@ package com.pdrinyo.thesenaidigitalcard.feature.carteirinha.BaseSystem
 
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.Modifier
 import androidx.core.graphics.set
@@ -19,7 +20,7 @@ fun QrCode(
     conteudo: String,
     modifier: Modifier = Modifier
 ) {
-    val bitmap = gerarQrCode(conteudo)
+    val bitmap = remember(conteudo) { gerarQrCode(conteudo) }
 
     Image(
         bitmap = bitmap.asImageBitmap(),
