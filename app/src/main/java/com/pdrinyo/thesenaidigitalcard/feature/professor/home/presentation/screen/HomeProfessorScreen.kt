@@ -1,4 +1,4 @@
-package com.pdrinyo.thesenaidigitalcard.feature.home
+package com.pdrinyo.thesenaidigitalcard.feature.professor.home.presentation.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,27 +34,24 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.pdrinyo.thesenaidigitalcard.App.Navegation.Routes
 import com.pdrinyo.thesenaidigitalcard.R
-import com.pdrinyo.thesenaidigitalcard.feature.login.BackgroundBlue
-import com.pdrinyo.thesenaidigitalcard.feature.login.DarkTextBlue
-import com.pdrinyo.thesenaidigitalcard.feature.login.IconContainerBlue
-import com.pdrinyo.thesenaidigitalcard.feature.login.InputBackground
-import com.pdrinyo.thesenaidigitalcard.feature.login.LightTextBlue
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.BackgroundBlue
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.DarkTextBlue
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.IconContainerBlue
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.InputBackground
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.LightTextBlue
 
 @Composable
-fun HomeScreen(
-    navController: NavController = rememberNavController(),
-    userType: String = "Aluno",
+fun HomeProfessorScreen(
+    onTurmasClick: () -> Unit,
+    onUnidadesCurricularesClick: () -> Unit,
+    modifier: Modifier = Modifier,
     profileImageRes: Int = R.drawable.homelanderr
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(BackgroundBlue)
             .padding(horizontal = 28.dp, vertical = 40.dp)
@@ -71,7 +68,7 @@ fun HomeScreen(
                         append("Portal do ")
                     }
                     withStyle(style = SpanStyle(color = LightTextBlue)) {
-                        append(userType)
+                        append("Professor")
                     }
                 },
                 fontSize = 32.sp,
@@ -83,7 +80,7 @@ fun HomeScreen(
 
             Image(
                 painter = painterResource(id = profileImageRes),
-                contentDescription = "Foto de Perfil",
+                contentDescription = "Foto do Professor",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(190.dp)
@@ -93,35 +90,37 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // Botão Carteirinha
-            HomeOptionButton(
-                title = "Carteirinha",
+            HomeProfessorOptionButton(
+                title = "Turmas",
+                subtitle = null,
                 onClick = {
-                    navController.navigate(Routes.Carteirinha.route)
+                    onTurmasClick()
                 }
             )
 
-            // Botão UCs
-            HomeOptionButton(
-                title = "UCs",
+            Spacer(modifier = Modifier.height(16.dp))
+
+            HomeProfessorOptionButton(
+                title = "UCS",
+                subtitle = "(Inserir Faltas aos alunos)",
                 onClick = {
-                    navController.navigate(Routes.UnidadeCurricularAluno.route)
+                    onUnidadesCurricularesClick()
                 }
             )
-        }
         }
     }
-
+}
 
 @Composable
-fun HomeOptionButton(
+fun HomeProfessorOptionButton(
     title: String,
+    subtitle: String?,
     onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(64.dp)
+            .height(68.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
@@ -137,12 +136,24 @@ fun HomeOptionButton(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = title,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = DarkTextBlue
-            )
+            Column(
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = title,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = DarkTextBlue
+                )
+                if (subtitle != null) {
+                    Text(
+                        text = subtitle,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = DarkTextBlue
+                    )
+                }
+            }
 
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
@@ -154,10 +165,3 @@ fun HomeOptionButton(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen(
-        navController = rememberNavController()
-    )
-}

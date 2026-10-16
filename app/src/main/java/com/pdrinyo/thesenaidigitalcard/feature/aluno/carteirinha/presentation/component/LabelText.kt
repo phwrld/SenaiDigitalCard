@@ -1,4 +1,4 @@
-package com.pdrinyo.thesenaidigitalcard.feature.carteirinha.BaseSystem.Design
+package com.pdrinyo.thesenaidigitalcard.feature.aluno.carteirinha.presentation.component
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

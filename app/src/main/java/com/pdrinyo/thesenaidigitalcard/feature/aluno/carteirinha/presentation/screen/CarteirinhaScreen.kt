@@ -1,14 +1,9 @@
-package com.pdrinyo.thesenaidigitalcard.App
+package com.pdrinyo.thesenaidigitalcard.feature.aluno.carteirinha.presentation.screen
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,35 +12,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pdrinyo.thesenaidigitalcard.App.Navegation.App
 import com.pdrinyo.thesenaidigitalcard.R
-import com.pdrinyo.thesenaidigitalcard.feature.home.domain.UsuarioLogado
-import com.pdrinyo.thesenaidigitalcard.feature.carteirinha.BaseSystem.QrCode
-import com.pdrinyo.thesenaidigitalcard.feature.carteirinha.BaseSystem.Design.PerfilAluno
-import com.pdrinyo.thesenaidigitalcard.feature.carteirinha.BaseSystem.Design.TheSenaiDigitalCardTheme
+import com.pdrinyo.thesenaidigitalcard.feature.login.domain.model.UsuarioLogado
+import com.pdrinyo.thesenaidigitalcard.feature.aluno.carteirinha.presentation.component.PerfilAluno
+import com.pdrinyo.thesenaidigitalcard.feature.aluno.carteirinha.presentation.component.QrCode
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent { App() }
-    }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun TheSenaiDigitalCardPreview() {
-    TheSenaiDigitalCardTheme { TheSenaiDigitalCard() }
-}
-
-/**
- * Mantem imagens e cores originais. No fluxo autenticado, mostra dados da API;
- * no preview do Android Studio, mantem os textos de exemplo existentes.
- */
-@Composable
-fun TheSenaiDigitalCard(
+fun CarteirinhaScreen(
     modifier: Modifier = Modifier,
     usuarioLogado: UsuarioLogado? = null
 ) {

@@ -1,4 +1,4 @@
-package com.pdrinyo.thesenaidigitalcard.feature.carteirinha.BaseSystem
+package com.pdrinyo.thesenaidigitalcard.feature.aluno.carteirinha.presentation.component
 
 
 
