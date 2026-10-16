@@ -1,6 +1,6 @@
-package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.data.remote.dto
+package com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.data.remote.dto
 
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.domain.model.UnidadeCurricularAluno
+import com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.domain.model.UnidadeCurricular
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,7 +13,7 @@ data class UnidadeCurricularDto(
     val media: Double,
     val faltas: Int
 ) {
-    fun toDomain() = UnidadeCurricularAluno(
+    fun toDomain() = UnidadeCurricular(
         id = id,
         nome = nome,
         professor = professor,

@@ -1,8 +1,8 @@
-package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation
+package com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.domain.repository.UnidadeCurricularRepository
+import com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.domain.repository.UnidadeCurricularRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

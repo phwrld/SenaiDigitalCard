@@ -1,9 +1,9 @@
-package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.factory
+package com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.presentation.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.domain.repository.UnidadeCurricularRepository
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.UnidadeCurricularViewModel
+import com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.domain.repository.UnidadeCurricularRepository
+import com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.presentation.UnidadeCurricularViewModel
 
 class UnidadeCurricularViewModelFactory(
     private val repository: UnidadeCurricularRepository

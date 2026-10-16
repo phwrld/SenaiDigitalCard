@@ -1,4 +1,4 @@
-package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.screen
+package com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.presentation.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,8 +34,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pdrinyo.thesenaidigitalcard.feature.login.BackgroundBlue
 import com.pdrinyo.thesenaidigitalcard.feature.login.DarkTextBlue
 import com.pdrinyo.thesenaidigitalcard.feature.login.LightTextBlue
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.UnidadeCurricularViewModel
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.component.UnidadeCurricularAlunoCard
+import com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.presentation.UnidadeCurricularViewModel
+import com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.presentation.component.UnidadeCurricularCard
 
 /**
  * Segue o fluxo da tela do Rafael (UiState e ViewModel),
@@ -43,7 +43,7 @@ import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.co
  * Nao existe mais dependencia de dataSource() ficticio.
  */
 @Composable
-fun UnidadeCurricularAlunoScreen(
+fun UnidadeCurricularScreen(
     modifier: Modifier = Modifier,
     viewModel: UnidadeCurricularViewModel
 ) {
@@ -120,7 +120,7 @@ fun UnidadeCurricularAlunoScreen(
                             contentPadding = PaddingValues(vertical = 4.dp)
                         ) {
                             items(items = uiState.unidades, key = { it.id }) { unidade ->
-                                UnidadeCurricularAlunoCard(item = unidade)
+                                UnidadeCurricularCard(item = unidade)
                             }
                         }
                     }

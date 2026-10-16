@@ -1,8 +1,8 @@
-package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.data.repository
+package com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.data.repository
 
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.data.remote.service.UnidadeCurricularApi
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.domain.model.UnidadeCurricularAluno
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.domain.repository.UnidadeCurricularRepository
+import com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.data.remote.service.UnidadeCurricularApi
+import com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.domain.model.UnidadeCurricular
+import com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.domain.repository.UnidadeCurricularRepository
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -11,7 +11,7 @@ class ApiUnidadeCurricularRepositoryImpl(
     private val api: UnidadeCurricularApi
 ) : UnidadeCurricularRepository {
 
-    override suspend fun listar(): Result<List<UnidadeCurricularAluno>> =
+    override suspend fun listar(): Result<List<UnidadeCurricular>> =
         runCatching {
             api.listar().map { it.toDomain() }
         }.recoverCatching { erro ->

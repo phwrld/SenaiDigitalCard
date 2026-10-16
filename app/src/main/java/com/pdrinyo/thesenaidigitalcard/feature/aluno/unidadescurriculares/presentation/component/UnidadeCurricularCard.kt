@@ -1,4 +1,4 @@
-package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.component
+package com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,12 +26,12 @@ import androidx.compose.ui.unit.sp
 import com.pdrinyo.thesenaidigitalcard.feature.login.DarkTextBlue
 import com.pdrinyo.thesenaidigitalcard.feature.login.IconContainerBlue
 import com.pdrinyo.thesenaidigitalcard.feature.login.InputBackground
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.domain.model.UnidadeCurricularAluno
+import com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.domain.model.UnidadeCurricular
 
 @Composable
-fun UnidadeCurricularAlunoCard(
+fun UnidadeCurricularCard(
     modifier: Modifier = Modifier,
-    item: UnidadeCurricularAluno
+    item: UnidadeCurricular
 ) {
     Card(
         modifier = modifier

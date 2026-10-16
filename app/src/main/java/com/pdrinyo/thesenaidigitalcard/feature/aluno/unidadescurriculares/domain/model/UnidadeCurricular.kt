@@ -1,7 +1,7 @@
-package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.domain.model
+package com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.domain.model
 
 /** Mesmo formato de UnidadeCurricular da API de referencia do Rafael. */
-data class UnidadeCurricularAluno(
+data class UnidadeCurricular(
     val id: String,
     val nome: String,
     val professor: String,
