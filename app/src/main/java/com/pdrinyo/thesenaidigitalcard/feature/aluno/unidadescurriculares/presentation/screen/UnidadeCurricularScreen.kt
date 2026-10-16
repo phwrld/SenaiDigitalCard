@@ -31,9 +31,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.pdrinyo.thesenaidigitalcard.feature.login.BackgroundBlue
-import com.pdrinyo.thesenaidigitalcard.feature.login.DarkTextBlue
-import com.pdrinyo.thesenaidigitalcard.feature.login.LightTextBlue
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.BackgroundBlue
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.DarkTextBlue
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.LightTextBlue
 import com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.presentation.UnidadeCurricularViewModel
 import com.pdrinyo.thesenaidigitalcard.feature.aluno.unidadescurriculares.presentation.component.UnidadeCurricularCard
 

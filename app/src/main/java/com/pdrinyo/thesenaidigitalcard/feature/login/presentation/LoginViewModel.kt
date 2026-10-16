@@ -1,10 +1,9 @@
-package com.pdrinyo.thesenaidigitalcard.feature.login.presentation
+package com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pdrinyo.thesenaidigitalcard.feature.login.domain.model.UsuarioLogado
-import com.pdrinyo.thesenaidigitalcard.feature.login.domain.repository.LoginRepository
-import com.pdrinyo.thesenaidigitalcard.feature.login.domain.repository.LoginRepositoryProvider
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.domain.model.UsuarioLogado
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.domain.repository.LoginRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
