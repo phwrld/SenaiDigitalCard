@@ -1,10 +1,10 @@
-package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation
+package com.pdrinyo.thesenaidigitalcard.feature.login.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pdrinyo.thesenaidigitalcard.feature.home.domain.UsuarioLogado
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.data.repository.LoginRepository
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.data.repository.LoginRepositoryProvider
+import com.pdrinyo.thesenaidigitalcard.feature.login.domain.model.UsuarioLogado
+import com.pdrinyo.thesenaidigitalcard.feature.login.domain.repository.LoginRepository
+import com.pdrinyo.thesenaidigitalcard.feature.login.domain.repository.LoginRepositoryProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,15 +12,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val repository: LoginRepository = LoginRepositoryProvider.provide()
+    private val repository: LoginRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(LoginUIState())
-    val uiState: StateFlow<LoginUIState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(LoginUiState())
+    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
-    fun onEvent(event: LoginUIEvent) {
+    fun onEvent(event: LoginEvent) {
         when (event) {
-            is LoginUIEvent.OnUsuarioChange -> {
+            is LoginEvent.OnUsuarioChange -> {
                 _uiState.update { state ->
                     state.copy(
                         usuario = event.value,
@@ -29,7 +29,7 @@ class LoginViewModel(
                 }
             }
 
-            is LoginUIEvent.OnSenhaChange -> {
+            is LoginEvent.OnSenhaChange -> {
                 _uiState.update { state ->
                     state.copy(
                         senha = event.value,
@@ -38,13 +38,13 @@ class LoginViewModel(
                 }
             }
 
-            LoginUIEvent.OnNavegacaoRealizada -> {
+            LoginEvent.OnNavegacaoRealizada -> {
                 _uiState.update { state ->
                     state.copy(usuarioLogado = null)
                 }
             }
 
-            LoginUIEvent.OnEntrarClick -> {
+            LoginEvent.OnEntrarClick -> {
                 fazerLogin()
             }
         }
@@ -73,7 +73,7 @@ class LoginViewModel(
 
             val result = repository.login(
                 usuario = state.usuario.trim(),
-                senha = state.senha.trim()
+                senha = state.senha
             )
 
             result

@@ -1,6 +1,7 @@
-package com.pdrinyo.thesenaidigitalcard.feature.login
+package com.pdrinyo.thesenaidigitalcard.feature.login.presentation.screen
 
 import com.pdrinyo.thesenaidigitalcard.R
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -37,28 +38,24 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import com.pdrinyo.thesenaidigitalcard.feature.home.domain.UsuarioLogado
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.LoginUIEvent
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.LoginViewModel
+import com.pdrinyo.thesenaidigitalcard.feature.login.domain.model.UsuarioLogado
+import com.pdrinyo.thesenaidigitalcard.feature.login.presentation.LoginEvent
+import com.pdrinyo.thesenaidigitalcard.feature.login.presentation.LoginViewModel
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel = viewModel(),
-    navController: NavController? = null,
+    viewModel: LoginViewModel,
     onLoginSucesso: (UsuarioLogado) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = uiState.usuarioLogado) {
         uiState.usuarioLogado?.let { usuario ->
-            viewModel.onEvent(LoginUIEvent.OnNavegacaoRealizada)
+            viewModel.onEvent(LoginEvent.OnNavegacaoRealizada)
             onLoginSucesso(usuario)
         }
     }
@@ -94,7 +91,7 @@ fun LoginScreen(
             OutlinedTextField(
                 value = uiState.usuario,
                 onValueChange = { value ->
-                    viewModel.onEvent(LoginUIEvent.OnUsuarioChange(value))
+                    viewModel.onEvent(LoginEvent.OnUsuarioChange(value))
                 },
                 placeholder = { Text("Usuário", color = Color.Gray) },
                 singleLine = true,
@@ -127,7 +124,7 @@ fun LoginScreen(
             OutlinedTextField(
                 value = uiState.senha,
                 onValueChange = { value ->
-                    viewModel.onEvent(LoginUIEvent.OnSenhaChange(value))
+                    viewModel.onEvent(LoginEvent.OnSenhaChange(value))
                 },
                 placeholder = { Text("Senha", color = Color.Gray) },
                 singleLine = true,
@@ -161,7 +158,7 @@ fun LoginScreen(
 
             Button(
                 onClick = {
-                    viewModel.onEvent(LoginUIEvent.OnEntrarClick)
+                    viewModel.onEvent(LoginEvent.OnEntrarClick)
                 },
                 enabled = !uiState.isLoading,
                 shape = RoundedCornerShape(8.dp),
@@ -205,8 +202,3 @@ fun LoginScreen(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun LoginScreenPreview() {
-    LoginScreen()
-}

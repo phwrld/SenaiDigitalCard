@@ -1,16 +1,14 @@
-package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.dto
+package com.pdrinyo.thesenaidigitalcard.feature.login.data.remote.dto
 
 import kotlinx.serialization.Serializable
 
-/**
- * Campos da API de Rafael: id, nome, matricula, curso, turma e token.
- * tipo e opcional: a API de referencia nao o devolve.
- */
+/** 'perfil' e o campo de permissao da API do professor. */
 @Serializable
 data class LoginResponseDto(
-    val id: String? = null,
+    val id: String = "",
     val nome: String = "",
     val matricula: String = "",
+    val perfil: String? = null,
     val curso: String = "",
     val turma: String = "",
     val token: String? = null,
