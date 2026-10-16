@@ -95,9 +95,7 @@ fun LoginContent(
                     focusedTextColor = DarkTextBlue,
                     unfocusedTextColor = DarkTextBlue,
                     focusedContainerColor = InputBackground,
-                    unfocusedTextColor = DarkTextBlue,
-                    unfocusedTextColor = DarkTextBlue,
-                    focusedContainerColor = InputBackground,
+                    unfocusedContainerColor = InputBackground,
                     focusedBorderColor = Color.White,
                     unfocusedBorderColor = Color.White
                 ),
@@ -134,9 +132,7 @@ fun LoginContent(
                     focusedTextColor = DarkTextBlue,
                     unfocusedTextColor = DarkTextBlue,
                     focusedContainerColor = InputBackground,
-                    unfocusedTextColor = DarkTextBlue,
-                    unfocusedTextColor = DarkTextBlue,
-                    focusedContainerColor = InputBackground,
+                    unfocusedContainerColor = InputBackground,
                     focusedBorderColor = Color.White,
                     unfocusedBorderColor = Color.White
                 ),
