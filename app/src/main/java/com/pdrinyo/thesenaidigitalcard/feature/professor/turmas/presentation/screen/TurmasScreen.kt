@@ -1,4 +1,4 @@
-package com.pdrinyo.thesenaidigitalcard.feature.turma.presentation
+package com.pdrinyo.thesenaidigitalcard.feature.professor.turmas.presentation.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,14 +26,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pdrinyo.thesenaidigitalcard.feature.login.BackgroundBlue
-import com.pdrinyo.thesenaidigitalcard.feature.login.DarkTextBlue
-import com.pdrinyo.thesenaidigitalcard.feature.login.LightTextBlue
-import com.pdrinyo.thesenaidigitalcard.feature.turma.domain.model.Turma
-import com.pdrinyo.thesenaidigitalcard.feature.turma.presentation.component.TurmaCard
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.BackgroundBlue
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.DarkTextBlue
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.LightTextBlue
+import com.pdrinyo.thesenaidigitalcard.feature.professor.turmas.domain.model.Turma
+import com.pdrinyo.thesenaidigitalcard.feature.professor.turmas.presentation.component.TurmaCard
 
 @Composable
 fun TurmasScreen(
+    modifier: Modifier = Modifier,
     turmas: List<Turma> = listOf(
         Turma("1", "Turma 1A", "Desenvolvimento de Sistemas", 32, "13:30 - 17:30", "1º Semestre"),
         Turma("2", "Turma 2B", "Análise de Sistemas", 28, "08:00 - 12:00", "2º Semestre"),
@@ -42,7 +43,7 @@ fun TurmasScreen(
     )
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(BackgroundBlue)
             .padding(horizontal = 20.dp, vertical = 24.dp)

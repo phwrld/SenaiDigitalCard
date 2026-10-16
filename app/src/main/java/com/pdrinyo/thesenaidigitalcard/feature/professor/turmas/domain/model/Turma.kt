@@ -1,4 +1,4 @@
-package com.pdrinyo.thesenaidigitalcard.feature.turma.domain.model
+package com.pdrinyo.thesenaidigitalcard.feature.professor.turmas.domain.model
 
 data class Turma(
     val id: String,

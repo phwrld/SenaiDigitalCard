@@ -1,4 +1,4 @@
-package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.domain.model
+package com.pdrinyo.thesenaidigitalcard.feature.professor.unidadescurriculares.domain.model
 
 data class UnidadeCurricular(
     val id: String,

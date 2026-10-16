@@ -1,6 +1,6 @@
-package com.pdrinyo.thesenaidigitalcard.feature.turma.data
+package com.pdrinyo.thesenaidigitalcard.feature.professor.turmas.data
 
-import com.pdrinyo.thesenaidigitalcard.feature.turma.domain.model.Turma
+import com.pdrinyo.thesenaidigitalcard.feature.professor.turmas.domain.model.Turma
 
 fun turmaDataSource(): List<Turma> {
     return listOf(

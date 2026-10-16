@@ -1,6 +1,6 @@
-package com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.presentation.screen
+package com.pdrinyo.thesenaidigitalcard.feature.professor.unidadescurriculares.presentation.screen
 
-import AlunoFaltaCard
+import com.pdrinyo.thesenaidigitalcard.feature.professor.unidadescurriculares.presentation.component.AlunoFaltaCard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -30,10 +30,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pdrinyo.thesenaidigitalcard.feature.login.BackgroundBlue
-import com.pdrinyo.thesenaidigitalcard.feature.login.DarkTextBlue
-import com.pdrinyo.thesenaidigitalcard.feature.login.LightTextBlue
-import com.pdrinyo.thesenaidigitalcard.feature.unidadecurricular.domain.model.Aluno
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.BackgroundBlue
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.DarkTextBlue
+import com.pdrinyo.thesenaidigitalcard.core.designsystem.theme.LightTextBlue
+import com.pdrinyo.thesenaidigitalcard.feature.professor.unidadescurriculares.domain.model.Aluno
 
 
 @Composable
@@ -79,7 +79,9 @@ fun UnidadeCurricularScreen(
                 fontFamily = FontFamily.SansSerif
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+            Text("Demonstração local: faltas não são enviadas à API.", color = Color.White, fontSize = 12.sp)
+            Spacer(modifier = Modifier.height(12.dp))
 
             Box(
                 modifier = Modifier
