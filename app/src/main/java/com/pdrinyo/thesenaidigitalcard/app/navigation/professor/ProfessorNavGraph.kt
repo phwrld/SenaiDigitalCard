@@ -19,6 +19,8 @@ import kotlinx.coroutines.flow.StateFlow
 
 fun NavGraphBuilder.professorNavGraph(
     navController: NavHostController,
+    turmaRepository: com.pdrinyo.thesenaidigitalcard.feature.professor.turmas.domain.repository.TurmaProfessorRepository,
+    ucRepository: com.pdrinyo.thesenaidigitalcard.feature.professor.unidadescurriculares.domain.repository.UcProfessorRepository,
     usuarioLogadoFlow: StateFlow<UsuarioLogado?>,
     darkTheme: Boolean,
     onDarkThemeChange: (Boolean) -> Unit,
@@ -41,14 +43,20 @@ fun NavGraphBuilder.professorNavGraph(
         composable(ProfessorRoutes.TURMAS) {
             ProfileGuard(usuarioLogadoFlow, PerfilAcesso.PROFESSOR, onSessaoAusente, onPerfilInvalido) { usuario ->
                 AppShell("Turmas", usuario, true, darkTheme, onDarkThemeChange, { navController.popBackStack() }, onLogout) { padding ->
-                    TurmasScreen(modifier = Modifier.fillMaxSize().padding(padding))
+                    TurmasScreen(viewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
+                        @Suppress("UNCHECKED_CAST")
+                        override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T = com.pdrinyo.thesenaidigitalcard.feature.professor.turmas.presentation.TurmaProfessorViewModel(turmaRepository) as T
+                    }), modifier = Modifier.fillMaxSize().padding(padding))
                 }
             }
         }
         composable(ProfessorRoutes.UNIDADES_CURRICULARES) {
             ProfileGuard(usuarioLogadoFlow, PerfilAcesso.PROFESSOR, onSessaoAusente, onPerfilInvalido) { usuario ->
                 AppShell("Unidades Curriculares", usuario, true, darkTheme, onDarkThemeChange, { navController.popBackStack() }, onLogout) { padding ->
-                    UnidadeCurricularScreen(modifier = Modifier.fillMaxSize().padding(padding))
+                    UnidadeCurricularScreen(viewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
+                        @Suppress("UNCHECKED_CAST")
+                        override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T = com.pdrinyo.thesenaidigitalcard.feature.professor.unidadescurriculares.presentation.UcProfessorViewModel(ucRepository) as T
+                    }), modifier = Modifier.fillMaxSize().padding(padding))
                 }
             }
         }

@@ -94,6 +94,8 @@ fun AppNavHost(
         )
 
         professorNavGraph(
+            turmaRepository = container.turmaProfessorRepository,
+            ucRepository = container.ucProfessorRepository,
             navController = navController,
             usuarioLogadoFlow = sessionViewModel.usuarioLogado,
             darkTheme = darkTheme,

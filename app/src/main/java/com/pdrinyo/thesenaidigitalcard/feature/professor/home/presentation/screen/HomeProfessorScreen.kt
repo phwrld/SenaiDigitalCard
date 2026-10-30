@@ -102,7 +102,7 @@ fun HomeProfessorScreen(
 
             HomeProfessorOptionButton(
                 title = "UCS",
-                subtitle = "(Inserir Faltas aos alunos)",
+                subtitle = "(Disciplinas e turmas ministradas)",
                 onClick = {
                     onUnidadesCurricularesClick()
                 }

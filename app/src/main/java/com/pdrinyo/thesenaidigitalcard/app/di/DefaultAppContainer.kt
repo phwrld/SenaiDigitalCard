@@ -31,6 +31,17 @@ class DefaultAppContainer : AppContainer {
         ApiUnidadeCurricularRepositoryImpl(api = unidadeCurricularApi)
     }
 
+    override val turmaProfessorRepository by lazy {
+        com.pdrinyo.thesenaidigitalcard.feature.professor.turmas.data.repository.ApiTurmaProfessorRepository(
+            networkClient.createAuthenticated(com.pdrinyo.thesenaidigitalcard.feature.professor.turmas.data.remote.service.TurmaProfessorApi::class.java)
+        )
+    }
+    override val ucProfessorRepository by lazy {
+        com.pdrinyo.thesenaidigitalcard.feature.professor.unidadescurriculares.data.repository.ApiUcProfessorRepository(
+            networkClient.createAuthenticated(com.pdrinyo.thesenaidigitalcard.feature.professor.unidadescurriculares.data.remote.service.UcProfessorApi::class.java)
+        )
+    }
+
     companion object {
         private const val BASE_URL = "http://10.0.2.2:8080/"
     }
